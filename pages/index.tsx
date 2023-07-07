@@ -6,6 +6,15 @@ const cls = (...classnames: string[]) => {
   return classnames.join(" ");
 };
 
+interface IFormData {
+  department: "salse" | "marketing" | "accounting" | "customerservice";
+  motivation: "money" | "love" | "learn" | "noidea";
+  salary: number;
+  introduce: string;
+  dreams: string;
+  email: string;
+}
+
 //tailwind css
 const TEXT_INPUT = "px-2 py-1 rounded-lg border-2 border-black";
 const RADIO =
@@ -19,13 +28,13 @@ export default () => {
     watch,
     handleSubmit,
     formState: { errors },
-  } = useForm({ mode: "all" });
+  } = useForm<IFormData>({ mode: "all" });
 
   const radioValidationOption: RegisterOptions = { required: "*required" };
 
   console.log(errors);
 
-  const onValid = (data) => {
+  const onValid = (data: IFormData) => {
     console.log(data);
   };
 
