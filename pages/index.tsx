@@ -32,8 +32,6 @@ export default () => {
 
   const radioValidationOption: RegisterOptions = { required: "*required" };
 
-  console.log(errors);
-
   const onValid = (data: IFormData) => {
     console.log(data);
   };
@@ -53,7 +51,9 @@ export default () => {
               <h2 className={cls(MIDDLE_TITLE)}>
                 What department do you want to work for?
               </h2>
-              <span className={cls(ERROR_MESSAGE)}>*required</span>
+              <span className={cls(ERROR_MESSAGE)}>
+                {errors.department?.message}
+              </span>
             </div>
 
             <div className="flex flex-col px-2">
@@ -105,7 +105,9 @@ export default () => {
               <h2 className={cls(MIDDLE_TITLE)}>
                 Why do you want to join this company?
               </h2>
-              <span className={cls(ERROR_MESSAGE)}>*required</span>
+              <span className={cls(ERROR_MESSAGE)}>
+                {errors.motivation?.message}
+              </span>
             </div>
 
             <div className="flex flex-col px-2">
@@ -168,7 +170,9 @@ export default () => {
               })}
               className={cls(TEXT_INPUT)}
             />
-            <span className={cls(ERROR_MESSAGE)}>errormeesga</span>
+            <span className={cls(ERROR_MESSAGE)}>
+              {errors.introduce?.message}
+            </span>
           </div>
           <div className="flex flex-col">
             <h2 className={cls(MIDDLE_TITLE)}> Tell us what your dreams are</h2>
@@ -180,7 +184,7 @@ export default () => {
               className={cls(TEXT_INPUT)}
               rows={5}
             />
-            <span className={cls(ERROR_MESSAGE)}>*required</span>
+            <span className={cls(ERROR_MESSAGE)}>{errors.dreams?.message}</span>
           </div>
           <div className="flex flex-col">
             <h2 className={cls(MIDDLE_TITLE)}>Email</h2>
@@ -195,7 +199,7 @@ export default () => {
               })}
               className={cls(TEXT_INPUT)}
             />
-            <span className={cls(ERROR_MESSAGE)}>*required</span>
+            <span className={cls(ERROR_MESSAGE)}>{errors.email?.message}</span>
           </div>
           <button
             className="py-2 rounded-lg bg-yellow-300 border border-b-2 border-r-2 border-black font-semibold"
