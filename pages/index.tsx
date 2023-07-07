@@ -1,4 +1,3 @@
-import { Warning } from "postcss";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import type { RegisterOptions } from "react-hook-form";
@@ -43,7 +42,6 @@ const TITLE = "text-center font-bold text-xl mb-5";
 export default () => {
   const {
     register,
-    watch,
     handleSubmit,
     formState: { errors },
   } = useForm<IFormData>({ mode: "all" });
@@ -200,7 +198,10 @@ export default () => {
             <textarea
               {...register("dreams", {
                 required: "Please tell us what your dreams are.",
-                minLength: { value: 10, message: "More then 10 letters." },
+                minLength: {
+                  value: 11,
+                  message: "Please write more than 10 letters.",
+                },
               })}
               className={cls(TEXT_INPUT)}
               rows={5}
