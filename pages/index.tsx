@@ -19,13 +19,15 @@ export default () => {
     watch,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({ mode: "all" });
 
   const radioValidationOption: RegisterOptions = { required: "*required" };
 
   console.log(errors);
 
-  const onValid = () => {};
+  const onValid = (data) => {
+    console.log(data);
+  };
 
   return (
     <div className="py-5">
@@ -33,7 +35,10 @@ export default () => {
         <h1 className="text-center font-bold text-xl mb-5">
           Job Application Form
         </h1>
-        <form className="flex flex-col space-y-5">
+        <form
+          className="flex flex-col space-y-5"
+          onSubmit={handleSubmit(onValid)}
+        >
           <div className="flex flex-col">
             <div className="flex space-x-1">
               <h2 className={cls(MIDDLE_TITLE)}>
@@ -140,24 +145,29 @@ export default () => {
           <div className="flex flex-col">
             <h2 className={cls(MIDDLE_TITLE)}>Salary</h2>
             <select {...register("salary")} className={cls(TEXT_INPUT)}>
-              <option value="50">$50K</option>
-              <option value="100">$100K</option>
-              <option value="150">$150K</option>
-              <option value="200">$200K</option>
+              <option value={50}>$50K</option>
+              <option value={100}>$100K</option>
+              <option value={150}>$150K</option>
+              <option value={200}>$200K</option>
             </select>
           </div>
           <div className="flex flex-col">
             <h2 className={cls(MIDDLE_TITLE)}>Introduce yourself</h2>
-            <input {...register("introduce")} className={cls(TEXT_INPUT)} />
+            <input
+              {...register("introduce", {
+                required: "Please write down your introduction.",
+              })}
+              className={cls(TEXT_INPUT)}
+            />
             <span className={cls(ERROR_MESSAGE)}>errormeesga</span>
           </div>
           <div className="flex flex-col">
-            <h2 className={cls(MIDDLE_TITLE)}>
-              {" "}
-              Tell us what is your dreams are
-            </h2>
+            <h2 className={cls(MIDDLE_TITLE)}> Tell us what your dreams are</h2>
             <textarea
-              {...register("dreams")}
+              {...register("dreams", {
+                required: "Please tell us what your dreams are.",
+                minLength: { value: 10, message: "More then 10 letters." },
+              })}
               className={cls(TEXT_INPUT)}
               rows={5}
             />
@@ -165,7 +175,17 @@ export default () => {
           </div>
           <div className="flex flex-col">
             <h2 className={cls(MIDDLE_TITLE)}>Email</h2>
-            <input {...register("email")} className={cls(TEXT_INPUT)} />
+            <input
+              {...register("email", {
+                required: "Please write down your email",
+                validate: {
+                  onlyNaver: (email: string) =>
+                    email.includes("@naver.com") ||
+                    "Only naver email is available",
+                },
+              })}
+              className={cls(TEXT_INPUT)}
+            />
             <span className={cls(ERROR_MESSAGE)}>*required</span>
           </div>
           <button
