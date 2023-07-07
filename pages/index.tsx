@@ -1,4 +1,5 @@
-import React from "react";
+import { Warning } from "postcss";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import type { RegisterOptions } from "react-hook-form";
 
@@ -15,12 +16,29 @@ interface IFormData {
   email: string;
 }
 
+const departmentHashmap = {
+  salse: "Salse",
+  marketing: "Marketing",
+  accounting: "Accounting",
+  customerservice: "Customer Service",
+};
+
+const motivationHashMap = {
+  money: "I want money!",
+  love: "I love this company",
+  learn: "I want to learn",
+  noidea: "I don't know why",
+};
+
 //tailwind css
 const TEXT_INPUT = "px-2 py-1 rounded-lg border-2 border-black";
 const RADIO =
   "mr-2 appearance-none w-2 h-2 rounded-full ring-1 ring-offset-2 ring-black transition bg-white checked:bg-black";
 const MIDDLE_TITLE = "font-semibold text-[17px] ";
 const ERROR_MESSAGE = "text-red-500 text-sm";
+const WRAPPER =
+  "w-[500px] bg-pink-100 px-8 py-10 mx-auto border border-r-2 border-b-2 rounded-lg border-black";
+const TITLE = "text-center font-bold text-xl mb-5";
 
 export default () => {
   const {
@@ -29,22 +47,25 @@ export default () => {
     handleSubmit,
     formState: { errors },
   } = useForm<IFormData>({ mode: "all" });
+  const [formData, setFormData] = useState<IFormData | undefined>(undefined);
 
   const radioValidationOption: RegisterOptions = { required: "*required" };
 
   const onValid = (data: IFormData) => {
-    console.log(data);
+    setFormData(data);
+  };
+
+  const onInValid = () => {
+    setFormData(undefined);
   };
 
   return (
-    <div className="py-5">
-      <div className="w-[500px] bg-pink-100 px-8 py-10 mx-auto border border-r-2 border-b-2 rounded-lg border-black">
-        <h1 className="text-center font-bold text-xl mb-5">
-          Job Application Form
-        </h1>
+    <div className="py-5 flex flex-col space-y-7">
+      <div className={cls(WRAPPER)}>
+        <h1 className={cls(TITLE)}>Job Application Form</h1>
         <form
           className="flex flex-col space-y-5"
-          onSubmit={handleSubmit(onValid)}
+          onSubmit={handleSubmit(onValid, onInValid)}
         >
           <div className="flex flex-col">
             <div className="flex space-x-1">
@@ -209,6 +230,42 @@ export default () => {
           </button>
         </form>
       </div>
+      {formData ? (
+        <div className={cls(WRAPPER)}>
+          <h1 className={cls(TITLE)}>Submitted!</h1>
+          <div className="flex flex-col space-y-2">
+            <div>
+              <h2 className={cls(MIDDLE_TITLE)}>Department</h2>
+              <span>{departmentHashmap[formData.department]}</span>
+            </div>
+
+            <div>
+              <h2 className={cls(MIDDLE_TITLE)}>Motivation</h2>
+              <span>{motivationHashMap[formData.motivation]}</span>
+            </div>
+
+            <div>
+              <h2 className={cls(MIDDLE_TITLE)}>Salary</h2>
+              <span>{`$${formData.salary}K`}</span>
+            </div>
+
+            <div>
+              <h2 className={cls(MIDDLE_TITLE)}>Introdution</h2>
+              <span>{formData.introduce}</span>
+            </div>
+
+            <div>
+              <h2 className={cls(MIDDLE_TITLE)}>Your dreams</h2>
+              <span>{formData.dreams}</span>
+            </div>
+
+            <div>
+              <h2 className={cls(MIDDLE_TITLE)}>Email</h2>
+              <span>{formData.email}</span>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 };
